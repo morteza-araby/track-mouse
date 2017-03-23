@@ -22,8 +22,8 @@ function init() {
     let source = Rx.Observable.fromEvent(window, 'resize')
         .map(e => {
             return {
-                width:e.target.window.innerWidth,
-                height: e.target.window.innerHeigh
+                width: e.target.window.innerWidth,
+                height: e.target.window.innerHeight
             }
         })
         .delay(300)
@@ -36,9 +36,12 @@ function init() {
 }
 
 function onNextResize(value) {
-    console.log("### onNextResize", value)
-    let wSize = { width: window.innerWidth, height: window.innerHeight }
-
+    //console.log("### onNextResize", value)
+    var iframepos = $("#frame").position();
+    //let wSize = { width: window.innerWidth - iframepos.left, height: window.innerHeight - iframepos.top }
+    //let wSize = { width: value.width, height: value.height }
+    let wSize = { width: Math.min(lastRemoteSize.width, value.width), height: Math.min(lastRemoteSize.height, value.height) }
+    console.log("### onNextResize", wSize)
     resizeFrameContainer(wSize)
 
     let msg = { 'event': 'resize', 'value': wSize }
@@ -91,8 +94,14 @@ function resizeFrameContainer(size) {
 
 function onNext(value) {
     if (!circle) return
-    circle.style.left = "" + value.x + "px"
-    circle.style.top = "" + value.y + "px"
+    // circle.style.left = "" + value.x + "px"
+    // circle.style.top = "" + value.y + "px"
+
+    var iframepos = $("#frame").position();
+    let x = value.x + iframepos.left
+    let y = value.y
+    circle.style.left = "" + x + "px"
+    circle.style.top = "" + y + "px"
     console.log("### Emitted", value)
     let msg = { 'event': 'mousemove', 'value': value }
     socket.emit('message', msg)
@@ -104,23 +113,28 @@ function onMessage() {
     socket.on('message', function (msg) {
         if (!msg || Object.keys(msg).length === 0) return;
         let value = msg;
+        let wSize = { width: window.innerWidth, height: window.innerHeight }
         switch (msg.event) {
             case 'mousemove':
                 console.log('##RECEIVED: ', msg)
                 let circle = document.getElementById('circle')
                 if (!circle) return
-                circle.style.left = "" + msg.value.x + "px"
-                circle.style.top = "" + msg.value.y + "px"
+                var iframepos = $("#frame").position();
+                let x = msg.value.x + iframepos.left
+                let y = msg.value.y
+                circle.style.left = "" + x + "px"
+                circle.style.top = "" + y + "px"
                 break;
             case 'windowsize':
                 console.log('##Received window Size: ', msg)
-                let wSize = { width: Math.min(msg.value.width, window.innerWidth), height: Math.min(msg.value.height, window.innerHeight) }
+                wSize = { width: Math.min(msg.value.width, window.innerWidth), height: Math.min(msg.value.height, window.innerHeight) }
                 console.log('### Got min size window: ', wSize)
                 resizeFrameContainer(wSize);
             case 'resize':
                 wSize = { width: Math.min(msg.value.width, window.innerWidth), height: Math.min(msg.value.height, window.innerHeight) }
+                lastRemoteSize = msg.value;
                 resizeFrameContainer(wSize);
-            break;
+                break;
             default:
                 break;
         }
@@ -129,8 +143,7 @@ function onMessage() {
     });
 }
 
-
-
+let lastRemoteSize = { width: window.innerWidth, height: window.innerHeight }
 
 init()
 let sender = $('#sender')
