@@ -1,0 +1,18 @@
+
+.link1 {
+    background: url('http://lorempixel.com/g/100/100/cats');
+    width: 100px;
+    height: 100px;
+}
+
+.link2 {
+    background: url(./cat.jpg);
+    width: 100px;
+    height: 100px;
+}
+
+.link3 {
+    background: uRL("/demos/resources/cat.jpg");
+    width: 100px;
+    height: 100px;
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>documentSource</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="../lib/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+        crossorigin="anonymous">
+
+</head>
+
+<body>
+    <main>
+        <div id="circle">
+    </div>
+    <input id="sender" style="margin-left: 20px" type="checkbox" name="sender" value="Sender">Send the mouse move<br>
+    <input id="receiver" style="margin-left: 20px" type="checkbox" name="receiver" value="Receiver">Receive the mouse move<br>
+        <div id="frameContainer" class="columns">
+            <iframe class="frame" id="frame" src="documentSharePlayground.html"></iframe>
+            <!--<iframe class="frame" id="sink"></iframe>-->
+        </div>
+    </main>
+    
+    <script src="../app.js"></script>
+
+</body>
+
+</html>

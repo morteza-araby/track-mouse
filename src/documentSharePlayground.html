@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Playground</title>
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="resources/test.css">
+<style type="text/css">
+select {
+    overflow: hidden;
+    max-width: 180px;
+}
+select option {
+    display: inline;
+    float: left;
+}
+.container {
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+}
+.block {
+    display: inline;
+    background: #eee;
+    padding: 10px;
+    border: 1px solid #555;
+    margin: 10px;
+}
+#pool {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    max-width: 210px;
+}
+#poolAdd, #poolAppend, #poolInsert, #poolClear {
+    margin: 5px;
+}
+#pool > * {
+    margin: 5px;
+    border: 2px solid #333;
+    background: #fff;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+#pool > * > * {
+    margin: 3px;
+    background-color: #ddd;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 1.4em;
+    color: #333;
+    width: 32px;
+    height: 32px;
+    line-height: 28px;
+}
+#pool > *:hover {
+    border-color: #888;
+}
+#pool > *.selected {
+    border-color: #f23;
+}
+#pool > *.selected:hover {
+    border-color: #d12;
+}
+.link4 {
+    background: url('http://lorempixel.com/g/100/100/cats');
+    width: 100px;
+    height: 100px;
+}
+.link5 {
+    background: url('resources/cat.jpg');
+    width: 100px;
+    height: 100px;
+}
+.link6 {
+    background: url('resources/cat.jpg');
+    width: 100px;
+    height: 100px;
+}
+.nonexistent {
+    background: url('/not/here/at/all');
+}
+html[cct-share-peer] :not([type=range])[cct-share-focus] {
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    border: 2px solid rgba(81, 203, 238, 1);
+}
+:not(html[cct-share-peer]) :not([type=range])[cct-share-focus] {
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    border: 2px solid rgba(81, 203, 238, 1);
+}
+</style>
+</head>
+<body>
+<div class="contentContainer">
+<div class="container">
+<div class="block">
+    Absolute<br>
+    <img src="http://lorempixel.com/100/100/cats"></img>
+</div>
+<div class="block">
+    No Protocol<br>
+    <img src="//lorempixel.com/100/100/cats"></img>
+</div>
+<div class="block">
+    Relative<br>
+    <img src="resources/cat.jpg"></img>
+</div>
+<div class="block">
+    Root<br>
+    <img src="resources/cat.jpg"></img>
+</div>
+<div class="block">
+    Nonexistent<br>
+    <img src="/not/here/at/all"></img>
+</div>
+<div class="block">
+    Data<br>
+    <img src="data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7"></img>
+</div>
+<div class="block">
+    Absolute Style<br>
+    <div style="width: 100px; height: 100px; background: url('http://lorempixel.com/100/100/cats')"></div>
+</div>
+<div class="block">
+    Relative Style<br>
+    <div style="width: 100px; height: 100px; background: url('resources/cat.jpg')"></div>
+</div>
+<div class="block">
+    Root Style<br>
+    <div style="width: 100px; height: 100px; background: url('resources/cat.jpg')"></div>
+</div>
+<div class="block">
+    Nonexistent style<br>
+    <div style="width: 100px; height: 100px; background: url('/not/here/at/all')"></div>
+</div>
+<a href="https://www.google.com" class="block">
+    Absolute External CSS<br>
+    <div class="link1"></div>
+</a>
+<a href="shareState.html" class="block">
+    Relative External CSS<br>
+    <div class="link2"></div>
+</a>
+<a href="/shareState.html" class="block">
+    Root External CSS<br>
+    <div class="link3"></div>
+</a>
+<a href="https://www.google.com" class="block">
+    Absolute Inline CSS<br>
+    <div class="link4"></div>
+</a>
+<a href="shareState.html" class="block">
+    Relative Inline CSS<br>
+    <div class="link5"></div>
+</a>
+<a href="/shareState.html" class="block">
+    Root Inline CSS<br>
+    <div class="link6"></div>
+</a>
+<form class="block form">
+    Name: <input type="text">
+    <br>Email: <input type="email" cct-share-no-input-event>
+    <br>Bonus: <input type="checkbox">
+    <br>Enter some text:
+    <br><textarea></textarea>
+    <br><span>Favourite color:</span>
+    <br><select size=2>
+        <option value="red">Red</option>
+        <option value="green">Green</option>
+        <option value="blue">Blue</option>
+    </select>
+    <br><span>Favourite letter:</span>
+    <br><select id="letterSelect" size=3></select>
+    <script>(function() {
+        for (var c = 65; c <= 90; c++) {
+            var option = document.createElement('option');
+            option.textContent = option.value = String.fromCharCode(c);
+            letterSelect.appendChild(option);
+        }
+    }())</script>
+    <br><input type="radio" name="group1"> Red
+    <input type="radio" name="group1"> Green
+    <input type="radio" name="group1"> Blue
+    <br><input type="radio" name="group2"> Up
+    <input type="radio" name="group2"> Down
+    <br>Actual color:<input type="color">
+    <br>Only A<input type="text" pattern="[aA]*">
+    <br><input type="number">
+    <br><input type="file">
+    <br><input type="date">
+    <br><input type="month">
+    <br><input type="week">
+    <br><input type="time">
+    <br><input type="range">
+    <br><input type="submit">
+    <br><input type="reset">
+</form>
+<div class="block" cct-share-exclude>
+    Skipped
+</div>
+<div  class="block" style="display: none;" cct-share-style="">
+    Peer only
+</div>
+<div class="block" contenteditable>
+    Editable
+</div>
+<div class="block">
+    <div class="header">Only editable by self</div>
+    Best: <input type="text" cct-share-disabled><br>
+    Test: <input type="checkbox" cct-share-disabled>
+    <select cct-share-disabled>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+    </select>
+    <div contenteditable cct-share-disabled>Editable ish</div>
+</div>
+<div class="block">
+    <div class="header">Only editable by peer</div>
+    Best: <input type="text" disabled cct-share-enabled><br>
+    Test: <input type="checkbox" disabled cct-share-enabled>
+    <select disabled cct-share-enabled>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+    </select>
+    <div cct-share-enabled>Editable ish</div>
+</div>
+<div class="block">
+    <input type="button" id="poolAdd" value="Add">
+    <input type="button" id="poolInsert" value="Insert">
+    <input type="button" id="poolAppend" value="Append">
+    <input type="button" id="poolClear" value="Clear" cct-share-disabled>
+    <div id="pool"></div>
+    <script>
+        var id = 0;
+
+        poolAdd.onclick = function () {
+            var div = document.createElement('div');
+            div.innerHTML = '<span>[</span><span>' + (id++) + '</span><span>]</span>';
+            // div.textContent = id++;
+            div.onclick = function () {
+                div.classList.toggle('selected');
+            };
+            pool.appendChild(div);
+        }
+
+        poolAppend.onclick = function () {
+            var selected = pool.querySelectorAll('.selected');
+            Array.prototype.forEach.call(selected, function (element) {
+                pool.appendChild(element);
+                element.classList.remove('selected');
+            });
+        };
+
+        poolInsert.onclick = function () {
+            var selected = pool.querySelectorAll('.selected');
+            Array.prototype.slice.call(selected)
+                .reverse()
+                .forEach(function (element) {
+                    pool.insertBefore(element, pool.firstChild);
+                    element.classList.remove('selected');
+                });
+        };
+
+        poolClear.onclick = function () {
+            pool.innerHTML = '';
+        };
+
+    </script>
+</div>
+<div  class="block scroll-sync" style="height: 80px; overflow: scroll;">
+    <div>
+        i<br>should<br>sync<br>scroll
+    </div>
+</div>
+<div  class="block" style="height: 80px; overflow: scroll;">
+    <div>
+        i<br>should<br>not<br>sync<br>scroll
+    </div>
+</div>
+</div>
+</div>
+</body>
+</html>
