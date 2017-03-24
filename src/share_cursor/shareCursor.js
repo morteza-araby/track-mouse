@@ -113,6 +113,7 @@ PeerConnecter.clientInCall(client).then(function (connecter) {
         //let wSize = { width: Math.min(lastRemoteSize.width, event.target.window.innerWidth), height: Math.min(lastRemoteSize.height, event.target.window.innerHeight) }
         let wSize = { width: Math.min(event.target.window.innerWidth, window.innerWidth), height: Math.min( event.target.window.innerHeight, window.innerHeight) }
         resizeFrameContainer(wSize);
+        lastRemoteSize = {width: event.target.window.innerWidth, height: event.target.window.innerHeight};
         let payload = {
             'event': 'resize',
             value: wSize
