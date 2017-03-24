@@ -15,21 +15,15 @@ function init() {
     let value = { width: window.innerWidth, height: window.innerHeight }
     let msg = { 'event': 'windowsize', 'value': value }
 
+    let iframe = document.getElementById('frame');
+    bubbleIframeMouseMove(iframe);
+
     //send the size of the window
     socket.emit('message', msg);
-    var iframepos = null;//$("#frame").position();
+    resizeObservable();
+}
 
-    let ifr = getIframePosition('documentSharePlayground.html');
-    if (!ifr) {
-        console.log("### No iframe found:");
-        return;
-    }
-
-
-
-
-
-    let iframe = $('#frame').contents().find('html');
+function resizeObservable() {   
     let source = Rx.Observable.fromEvent(window, 'resize')
         .map(e => {
             return {
@@ -51,10 +45,8 @@ function onNextResize(value) {
     var iframepos = getIframePosition('documentSharePlayground.html');
     //let wSize = { width: window.innerWidth - iframepos.left, height: window.innerHeight - iframepos.top }
     //let wSize = { width: value.width, height: value.height }
-    let wSize = { width: Math.min(lastRemoteSize.width, value.width), height: Math.min(lastRemoteSize.height, value.height) }
-    console.log("### onNextResize", wSize)
-    resizeFrameContainer(wSize)
-
+    let wSize = { width: Math.min(lastRemoteSize.width, value.width), height: Math.min(lastRemoteSize.height, value.height) }    
+    resizeFrameContainer(wSize);
     let msg = { 'event': 'resize', 'value': wSize }
     socket.emit('message', msg)
 
@@ -64,7 +56,12 @@ function runMe() {
     if (!circle) return
 
     var iframepos = getIframePosition('documentSharePlayground.html');
-    let iframe = $('#frame').contents().find('html');
+
+    let iframe = document.getElementById('frame');
+    
+
+
+    //let iframe = $('#frame').contents().find('html');
     // $('#frame').contents().find('html').on('mousemove', function (e) { 
     //     var x = e.clientX + iframepos.left; 
     //     var y = e.clientY + iframepos.top;
@@ -108,7 +105,6 @@ function onNext(value) {
 }
 
 function onMessage() {
-
     socket.on('message', function (msg) {
         if (!msg || Object.keys(msg).length === 0) return;
         let value = msg;
@@ -142,6 +138,48 @@ function onMessage() {
 
     });
 }
+
+function bubbleIframeMouseMove(iframe){
+    // Save any previous onmousemove handler
+    var existingOnMouseMove = iframe.contentWindow.onmousemove;
+
+    // Attach a new onmousemove listener
+    iframe.contentWindow.onmousemove = function(e){
+        // Fire any existing onmousemove listener 
+        if(existingOnMouseMove) existingOnMouseMove(e);
+
+        // Create a new event for the this window
+        var evt = document.createEvent("MouseEvents");
+
+        // We'll need this to offset the mouse move appropriately
+        var boundingClientRect = iframe.getBoundingClientRect();
+
+        // Initialize the event, copying exiting event values
+        // for the most part
+        evt.initMouseEvent( 
+            "mousemove", 
+            true, // bubbles
+            false, // not cancelable 
+            window,
+            e.detail,
+            e.screenX,
+            e.screenY, 
+            e.clientX ,//+ boundingClientRect.left, 
+            e.clientY ,//+ boundingClientRect.top, 
+            e.ctrlKey, 
+            e.altKey,
+            e.shiftKey, 
+            e.metaKey,
+            e.button, 
+            null // no related element
+        );
+
+        // Dispatch the mousemove event on the iframe element
+        iframe.dispatchEvent(evt);
+    };
+}
+
+
 
 function getIframRect(url) {
     var iframes = window.parent.document.getElementsByTagName('iframe');
