@@ -17,7 +17,18 @@ function init() {
 
     //send the size of the window
     socket.emit('message', msg);
-    var iframepos = $("#frame").position();
+    var iframepos = null;//$("#frame").position();
+
+    let ifr = getIframePosition('documentSharePlayground.html');
+    if (!ifr) {
+        console.log("### No iframe found:");
+        return;
+    }
+
+
+
+
+
     let iframe = $('#frame').contents().find('html');
     let source = Rx.Observable.fromEvent(window, 'resize')
         .map(e => {
@@ -37,7 +48,7 @@ function init() {
 
 function onNextResize(value) {
     //console.log("### onNextResize", value)
-    var iframepos = $("#frame").position();
+    var iframepos = getIframePosition('documentSharePlayground.html');
     //let wSize = { width: window.innerWidth - iframepos.left, height: window.innerHeight - iframepos.top }
     //let wSize = { width: value.width, height: value.height }
     let wSize = { width: Math.min(lastRemoteSize.width, value.width), height: Math.min(lastRemoteSize.height, value.height) }
@@ -52,7 +63,7 @@ function runMe() {
     let circle = document.getElementById('circle')
     if (!circle) return
 
-    var iframepos = $("#frame").position();
+    var iframepos = getIframePosition('documentSharePlayground.html');
     let iframe = $('#frame').contents().find('html');
     // $('#frame').contents().find('html').on('mousemove', function (e) { 
     //     var x = e.clientX + iframepos.left; 
@@ -87,7 +98,7 @@ function resizeFrameContainer(size) {
 function onNext(value) {
     if (!circle) return
 
-    var iframepos = $("#frame").position();
+    var iframepos = getIframePosition('documentSharePlayground.html');
     let x = value.x + iframepos.left
     let y = value.y
     circle.style.left = "" + x + "px"
@@ -107,7 +118,7 @@ function onMessage() {
                 console.log('##RECEIVED: ', msg)
                 let circle = document.getElementById('circle')
                 if (!circle) return
-                var iframepos = $("#frame").position();
+                var iframepos = getIframePosition('documentSharePlayground.html');
                 let x = msg.value.x + iframepos.left
                 let y = msg.value.y
                 circle.style.left = "" + x + "px"
@@ -130,6 +141,39 @@ function onMessage() {
         }
 
     });
+}
+
+function getIframRect(url) {
+    var iframes = window.parent.document.getElementsByTagName('iframe');
+    var yourURL = null;//window.location.origin +'/documentSharePlayground.html';
+    var iframe;
+    if (url.includes('http')) {
+        yourURL = url;
+    } else {
+        yourURL = window.location.origin + '/' + url;
+    }
+    for (var i = 0; i < iframes.length; i++) {
+        if (iframes[i].src === yourURL) {
+            iframe = iframes[i];
+            break;
+        }
+    }
+    if (iframe) {
+        let rect = iframe.getBoundingClientRect();
+        return rect;
+    } else {
+        return null;
+    }
+}
+
+function getIframePosition(url) {
+    let ifr = getIframRect(url);
+    if (ifr) {
+        return { 'left': ifr.left, 'top': ifr.top }
+    } else {
+        console.log("### No iframe found:");
+        return null;
+    }
 }
 
 let lastRemoteSize = { width: window.innerWidth, height: window.innerHeight }
