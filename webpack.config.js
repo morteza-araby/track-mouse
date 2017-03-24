@@ -49,7 +49,7 @@ module.exports = {
                 to: ''
             },
              {
-                from: './src/lib',
+                from: './src/lib/socket.io.js',
                 to: 'lib'
             },
              {

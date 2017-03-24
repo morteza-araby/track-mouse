@@ -44,7 +44,7 @@ function resizeObservable() {
 
 function onNextResize(value) {
     //console.log("### onNextResize", value)
-    var iframepos = getIframePosition('documentSharePlayground.html');
+    var iframepos = getIframePosition('frame');
     //let wSize = { width: window.innerWidth - iframepos.left, height: window.innerHeight - iframepos.top }
     //let wSize = { width: value.width, height: value.height }
     let wSize = { width: Math.min(lastRemoteSize.width, value.width), height: Math.min(lastRemoteSize.height, value.height) }    
@@ -57,7 +57,7 @@ function runMe() {
     let circle = document.getElementById('circle')
     if (!circle) return
 
-    var iframepos = getIframePosition('documentSharePlayground.html');
+    var iframepos = getIframePosition('frame');
 
     let iframe = document.getElementById('frame');
     
@@ -97,7 +97,7 @@ function resizeFrameContainer(size) {
 function onNext(value) {
     if (!circle) return
 
-    var iframepos = getIframePosition('documentSharePlayground.html');
+    var iframepos = getIframePosition('frame');
     let x = value.x + iframepos.left
     let y = value.y + iframepos.top
     circle.style.left = "" + x + "px"
@@ -113,10 +113,10 @@ function onMessage() {
         let wSize = { width: window.innerWidth, height: window.innerHeight }
         switch (msg.event) {
             case 'mousemove':
-                console.log('##RECEIVED: ', msg)
+                //console.log('##RECEIVED: ', msg)
                 let circle = document.getElementById('circle')
                 if (!circle) return
-                var iframepos = getIframePosition('documentSharePlayground.html');
+                var iframepos = getIframePosition('frame');
                 let x = msg.value.x + iframepos.left
                 let y = msg.value.y + iframepos.top
                 circle.style.left = "" + x + "px"

@@ -69,7 +69,21 @@ function getIframRect(url) {
     }
 }
 
-export function getIframePosition(url) {
+export function getIframePosition(id) {
+     var documentWidth = parent.window.innerWidth;
+       var documentHeight = parent.window.innerHeight;
+       var iframeWidth = window.innerWidth;
+       var iframeHeight = window.innerHeight;
+       // Get Left Position
+       var iframeX = window.parent.document.getElementById(id).offsetLeft;
+       // Get Top Position
+       var iframeY = window.parent.document.getElementById(id).offsetTop;
+       return  { 'left': iframeX, 'top': iframeY}
+}
+export function getIframePositionx(url) {
+    var iframepos = $("#frame").position();
+    return iframepos;
+
     let ifr = getIframRect(url);
     if (ifr) {
         return { 'left': ifr.left, 'top': ifr.top}
