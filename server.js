@@ -8,7 +8,7 @@ var express = require('express');
 //   res.sendfile(__dirname + '/index.html');
 // });
 var data={};
-var root = path.join(__dirname, 'src');
+var root = path.join(__dirname, 'public');
 console.log('Root is : ', root);
 app.use(express.static(root));
 
@@ -22,7 +22,7 @@ app.use(express.static(root));
 // });
 io.on('connection', function(socket){
   console.log("Client connected: ", socket.id);
-  socket.emit('connected', data);
+  socket.emit('connected', socket.id);
   
   
   socket.on('message', function(msg){

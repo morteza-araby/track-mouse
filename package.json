@@ -1,10 +1,10 @@
 {
-  "name": "ps_rxjs5",
+  "name": "track-mouse",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "webpack-dev-server --watch --inline --port 3001",
+    "start": "webpack && webpack-dev-server --watch --inline --port 3001",
     "postinstall": "typings install",
     "nodemon": "nodemon --watch build",
     "test": "echo \"Error: no test specified\" && exit 1"

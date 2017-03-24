@@ -64,19 +64,11 @@ function runMe() {
     let source = Rx.Observable.fromEvent(iframe, 'mousemove')
         .map(e => {
             return {
-                x: e.clientX + iframepos.left,
+                x: e.clientX,
                 y: e.clientY + iframepos.top
             }
         })
         .delay(300)
-    // .map(e => {
-    //     return {
-    //         x: e.clientX,
-    //         y: e.clientY
-    //     }
-    // })
-    // .delay(300)
-
     source.subscribe(
         onNext,
         e => console.error('error ', e),
@@ -94,18 +86,14 @@ function resizeFrameContainer(size) {
 
 function onNext(value) {
     if (!circle) return
-    // circle.style.left = "" + value.x + "px"
-    // circle.style.top = "" + value.y + "px"
 
     var iframepos = $("#frame").position();
     let x = value.x + iframepos.left
     let y = value.y
     circle.style.left = "" + x + "px"
     circle.style.top = "" + y + "px"
-    console.log("### Emitted", value)
     let msg = { 'event': 'mousemove', 'value': value }
     socket.emit('message', msg)
-
 }
 
 function onMessage() {
@@ -129,16 +117,17 @@ function onMessage() {
                 console.log('##Received window Size: ', msg)
                 wSize = { width: Math.min(msg.value.width, window.innerWidth), height: Math.min(msg.value.height, window.innerHeight) }
                 console.log('### Got min size window: ', wSize)
+                let m = { 'event': 'resize', 'value': wSize }
                 resizeFrameContainer(wSize);
+                socket.emit('message', m);
             case 'resize':
                 wSize = { width: Math.min(msg.value.width, window.innerWidth), height: Math.min(msg.value.height, window.innerHeight) }
                 lastRemoteSize = msg.value;
-                resizeFrameContainer(wSize);
+                resizeFrameContainer(msg.value);
                 break;
             default:
                 break;
         }
-
 
     });
 }
@@ -153,23 +142,16 @@ sender.change((event) => {
     }
 })
 
-onMessage()
+onMessage();
 
-
+////If we want to sender control the size change
 // let receiver = $('#receiver')
 // receiver.change((event) => {
 //     if (event.target.checked) {
-//         socket.on('message', function (msg) {
-//             let value = msg;
-//             console.log('##RECEIVED: ', msg)
-//             let circle = document.getElementById('circle')
-//             if (!circle) return
-//             circle.style.left = "" + value.x + "px"
-//             circle.style.top = "" + value.y + "px"
-//             console.log("### Emitted", value)
-//             //socket.emit('message', value)
-//         });
+//         onMessage()
 //     }
 // })
+
+
 
 
