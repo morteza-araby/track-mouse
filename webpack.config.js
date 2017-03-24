@@ -52,6 +52,10 @@ module.exports = {
                 from: './src/lib',
                 to: 'lib'
             },
+             {
+                from: './src/share_cursor',
+                to: 'share_cursor'
+            },
         ]),
     ],
     resolve: {
