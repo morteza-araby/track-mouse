@@ -31,8 +31,8 @@ export function bubbleIframeMouseMove(iframe){
             e.detail,
             e.screenX,
             e.screenY, 
-            e.clientX ,//+ boundingClientRect.left, 
-            e.clientY ,//+ boundingClientRect.top, 
+            e.clientX,// + boundingClientRect.left,  
+            e.clientY,// + boundingClientRect.top, 
             e.ctrlKey, 
             e.altKey,
             e.shiftKey, 
@@ -70,7 +70,24 @@ function getIframRect(url) {
 }
 
 export function getIframePosition(id) {
-     var documentWidth = parent.window.innerWidth;
+    //  var iframepos = $("#frame").position();
+    // return iframepos;
+
+    // var body = document.body,
+    // html = document.documentElement;
+    
+    // var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    // var h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    
+    // h = Math.max( body.scrollHeight, body.offsetHeight, 
+    //                    html.clientHeight, html.scrollHeight, html.offsetHeight );
+    // w = Math.max( document.documentElement["clientWidth"],
+    // document.body["scrollWidth"],
+    // document.documentElement["scrollWidth"],
+    // document.body["offsetWidth"],
+    // document.documentElement["offsetWidth"]
+//);
+    var documentWidth = parent.window.innerWidth;
        var documentHeight = parent.window.innerHeight;
        var iframeWidth = window.innerWidth;
        var iframeHeight = window.innerHeight;

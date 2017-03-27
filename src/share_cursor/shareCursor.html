@@ -22,22 +22,24 @@
   <link rel="stylesheet" type="text/css" href="../resources/main.css">
   <link rel="stylesheet" href="../styles.css">
   <link rel="icon" href="../resources/favicon.ico">
+  <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/3.2.1/es6-promise.min.js"></script>
   <script type="text/javascript" src="https://get.cct.ericsson.net/latest/cct.js"></script>
   <script type="text/javascript" src="exampleUtils.js"></script>
   <style>
-    #shareBox {
-      position: relative;
+    #shareBox {      
       background-color: #ccc;
       margin: 10px;
       width: 100px;
       height: 80px;
+      /*position: relative;*/
+      display: flex;
     }
     
     .mouseIndicator {
       position: absolute;
       transform: translate(-10px, -10px);
-      left: 20px;
+      /*left: 20px;*/
       width: 20px;
       height: 20px;
       border-radius: 10px;
@@ -51,12 +53,12 @@
     
     #self {
       background-color: #f00;
-      top: 20px;
+      /*top: 20px;*/
     }
     
     #remote {
       background-color: #06f;
-      top: 50px;
+      /*top: 50px;*/
     }
     
     .margins {
@@ -83,21 +85,28 @@
       </div>
     </section>
     <div class="margins">
+      <div id="result" style="border:1px solid black"></div>
       <h1 id="exampleStatus">Waiting for peer to join</h1>
       <p id="instructions"></p>
-      <div id="shareBox">
-        <div class="mouseIndicator" id="self">
-          <p>self</p>
+      <div style="display: flex; align-items: center;">
+        <div style="display: flex; flex-direction: column;">
+          <label><input id="sender" style="margin-left: 20px" type="checkbox" name="sender" value="Sender"/>Send</label>
+          <label><input id="receiver" style="margin-left: 20px" type="checkbox" name="receiver" value="Receiver" />Receive</label>
         </div>
-        <div class="mouseIndicator" id="remote">
-          <p>remote</p>
+        <div id="shareBox">
+          <div class="mouseIndicator" id="self">
+            <p>self</p>
+          </div>
+          <div class="mouseIndicator" id="remote">
+            <p>remote</p>
+          </div>
         </div>
       </div>
       <div id="frameContainer" class="columns">
         <iframe class="frame" id="frame" src="../documentSharePlayground.html"></iframe>
         <!--<iframe class="frame" id="sink"></iframe>-->
       </div>
-
+      
 
     </div>
     <footer></footer>

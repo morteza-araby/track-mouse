@@ -10,6 +10,7 @@ import {bubbleIframeMouseMove, getIframePosition} from './lib/util'
 var socket = io('http://localhost:1340');
 
 function init() {
+    if(!socket) return;
     socket.on('connected', (msg) => {
         console.log('connected: ', msg);
         let result = JSON.stringify(msg);
@@ -101,6 +102,8 @@ function onNext(value) {
     var iframepos = getIframePosition('frame');
     let x = value.x + iframepos.left
     let y = value.y + iframepos.top
+    console.log("##x, y: ", x, y)
+    $("#result").html("x:" + (value.x) + ", y:" + value.y + ", iframepos.top:" + iframepos.top +  ", iframepos.left:" + iframepos.left);
     circle.style.left = "" + x + "px"
     circle.style.top = "" + y + "px"
     let msg = { 'event': 'mousemove', 'value': value }
