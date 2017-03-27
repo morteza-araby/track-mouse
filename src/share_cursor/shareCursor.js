@@ -52,10 +52,13 @@ PeerConnecter.clientInCall(client).then(function (connecter) {
         let size = {}
         switch (update.value.event) {
             case 'mousemove':
-                iframepos = getIframePosition('frame');
-                size = { x: update.value.value.x + iframepos.left, y: update.value.value.y + 100 }
-                updateEl.style.left = size.x + 'px'
-                updateEl.style.top = size.y + 'px'
+                 var iframepos = getIframePosition('frame');
+                let x = update.value.value.x + iframepos.left
+                let y = update.value.value.y + iframepos.top
+                //console.log("##x, y: ", x, y)
+                // $("#result").html("x:" + update.value.value.x + ", y:" + update.value.value.y + ", iframepos.top:" + iframepos.top +  ", iframepos.left:" + iframepos.left);
+                updateEl.style.left =  "" + x + "px"
+                updateEl.style.top = "" + y + "px"
                 break;
             case 'windowsize':
                 if (!me) {

@@ -27,7 +27,7 @@
   <script type="text/javascript" src="exampleUtils.js"></script>
   <style>
     #shareBox {
-      position: relative;
+      display: flex;
       background-color: #ccc;
       margin: 10px;
       width: 100px;
@@ -36,8 +36,8 @@
     
     .mouseIndicator {
       position: absolute;
-      transform: translate(-10px, -10px);
-      left: 20px;
+      /*transform: translate(-10px, -10px);
+      left: 20px;*/
       width: 20px;
       height: 20px;
       border-radius: 10px;
@@ -50,13 +50,12 @@
     }
     
     #self {
-      background-color: #f00;
-      top: 20px;
+      background-color: #f00;      
     }
     
     #remote {
-      background-color: #06f;
-      top: 50px;
+      background-color: #06f; 
+      align-self: flex-end     
     }
     
     .margins {
@@ -83,6 +82,7 @@
       </div>
     </section>
     <div class="margins">
+      <div id="result" style="border:1px solid black"></div>
       <h1 id="exampleStatus">Waiting for peer to join</h1>
       <p id="instructions"></p>
       <div id="shareBox">
