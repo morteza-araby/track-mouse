@@ -46,45 +46,21 @@ PeerConnecter.clientInCall(client).then(function (connecter) {
     }
     data.set(call.ownId, payload)
 
-
-
-
-
     data.on('update', function (update) {
         let me = (call.ownId === update.key) ? true : false
         var updateEl = update.key === call.ownId ? el.self : el.remote
         let size = {}
-        // if (me) {
-        //     size = { x: update.value.x, y: update.value.y }
-        // } else {
-        //     size = { x: update.value.x + iframepos.left, y: update.value.y + iframepos.top }
-        // }
-
         switch (update.value.event) {
             case 'mousemove':
                 iframepos = getIframePosition('frame');
-                // if (me) {
-                //     
-                // size = { x: update.value.value.x + iframepos.left, y: update.value.value.y +100 }
-                // } else {
-                //     size = { x: update.value.value.x , y: update.value.value.y }
-                // }
                 size = { x: update.value.value.x + iframepos.left, y: update.value.value.y + 100 }
-                //size = { x: update.value.value.x, y: update.value.value.y }
                 updateEl.style.left = size.x + 'px'
                 updateEl.style.top = size.y + 'px'
                 break;
             case 'windowsize':
-                console.log('##Received window Size: ', update)
-                //iframepos = getIframePosition('frame');
-                //size = { width: Math.min(update.value.value.width, window.innerWidth), height: Math.min(update.value.value.height, window.innerHeight) }
-                //console.log('### Got min size window: ', size)
-                
                 if (!me) {
                     lastRemoteSize = update.value.value;
-                    
                     console.log('##Received window Size Others: ', size)
-                    
                 }
                 size = { width: Math.min(lastRemoteSize.width, window.innerWidth), height: Math.min(lastRemoteSize.height, window.innerHeight) }
                 let payload = { 'event': 'resize', 'value': size }
@@ -94,55 +70,32 @@ PeerConnecter.clientInCall(client).then(function (connecter) {
                 if (!me) {
                     lastRemoteSize = update.value.value;
                 }
-                //size = { width: Math.min(update.value.value.width, lastRemoteSize.width), height: Math.min(update.value.value.height, lastRemoteSize.height) }                   
-                //  } else {
-                //       size = { width: Math.min(update.value.value.width, window.innerWidth), height: Math.min(update.value.value.height, window.innerHeight) }
-                //  }
-                //size = { width: Math.min(update.value.value.width, window.innerWidth), height: Math.min(update.value.value.height, window.innerHeight) }
                 size = { width: Math.min(lastRemoteSize.width, window.innerWidth), height: Math.min(lastRemoteSize.height, window.innerHeight) }
                 console.log('##Received resize: ', update)
                 iframepos = getIframePosition('frame');
-                //lastRemoteSize = size;
                 resizeFrameContainer(size);
                 break;
             default:
                 break;
         }
-
-
     })
 
     iframe.addEventListener('mousemove', function (event) {
-        //if (event.target === el.shareBox) {
-        iframepos = getIframePosition('frame');
-        //console.log("### iframpos: ", iframepos);
         let payload = {
             'event': 'mousemove',
-            //value: { x: event.clientX + iframepos.left, y: event.clientY + iframepos.top }
             value: { x: event.clientX, y: event.clientY }
         }
         data.set(call.ownId, payload)
-        //}
     })
 
     window.addEventListener('resize', function (event) {
-        //let wSize = { width: Math.min(lastRemoteSize.width, event.target.window.innerWidth), height: Math.min(lastRemoteSize.height, event.target.window.innerHeight) }
-        //let wSize = { width: Math.min(event.target.window.innerWidth, window.innerWidth), height: Math.min( event.target.window.innerHeight, window.innerHeight) }
         let wSize = { width: event.target.window.innerWidth, height: event.target.window.innerHeight };
-        // resizeFrameContainer(wSize);
-
         let payload = {
             'event': 'resize',
             value: wSize
         }
         data.set(call.ownId, payload)
     })
-
-
-
-
-
-
 }).catch(function (error) {
     cct.log.error('example', '' + error)
     logError('Error: ' + error)
@@ -150,7 +103,7 @@ PeerConnecter.clientInCall(client).then(function (connecter) {
 
 
 function resizeFrameContainer(size) {
-    //Set the size of the container to minimum size
+    //Set the size of the container
     let fc = document.getElementById('frameContainer');
     fc.style.width = "" + size.width + "px";
     fc.style.height = "" + size.height + "px";
