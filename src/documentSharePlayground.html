@@ -4,6 +4,23 @@
     <title>Playground</title>
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="resources/test.css">
+ <script type="text/javascript" src="https://get.cct.ericsson.net/latest/dom-source.js"></script>  
+<script>
+    cct.log.setLogLevel(cct.log.VERBOSE);
+    cct.log.color = true;
+    var source = new cct.domWidget.DocumentSource('*', {
+        listenToValueChanges: true,
+        scrollSyncSelector: 'html, body, .scroll-sync',
+        changeHandler: function (node, key, value) {
+            if (typeof(value) === 'string') {
+                return value.indexOf('nope') !== -1;
+            }
+            if (key === 'checked') {
+                console.log('toggled checked:', node);
+            }
+        },
+    });
+</script>
 <style type="text/css">
 select {
     overflow: hidden;
