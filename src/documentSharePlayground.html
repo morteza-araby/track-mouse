@@ -281,6 +281,57 @@ html[cct-share-peer] :not([type=range])[cct-share-focus] {
         poolClear.onclick = function () {
             pool.innerHTML = '';
         };
+         onmessage = function(e) {            
+            if(e.data.type === 'SEB_IFRAME_BUBBLE'){
+                console.log('###### Got in playground message: ', e);
+                frameMouseMove(e);
+                e.ports[0].postMessage('Message back from the IFrame');
+            }
+        }
+
+ 
+ 
+    var frameMouseMove = function bubbleIframeMouseMove(messageEvent){
+    // Save any previous onmousemove handler
+    var existingOnMouseMove = this.onmousemove;
+
+    // Attach a new onmousemove listener
+    this.onmousemove = function(e){
+        // Fire any existing onmousemove listener 
+        if(existingOnMouseMove) existingOnMouseMove(e);
+
+        // Create a new event for the this window
+        var evt = document.createEvent("MouseEvents");
+
+        // We'll need this to offset the mouse move appropriately
+        //var boundingClientRect = iframe.getBoundingClientRect();
+
+        // Initialize the event, copying exiting event values
+        // for the most part
+        evt.initMouseEvent( 
+            "mousemove", 
+            true, // bubbles
+            false, // not cancelable 
+            window,
+            e.detail,
+            e.screenX,
+            e.screenY, 
+            e.clientX,// + boundingClientRect.left,  
+            e.clientY,// + boundingClientRect.top, 
+            e.ctrlKey, 
+            e.altKey,
+            e.shiftKey, 
+            e.metaKey,
+            e.button, 
+            null // no related element
+        );
+
+        // Dispatch the mousemove event on the iframe element
+        //this.dispatchEvent(evt);
+        let mousePosition = {x: evt.clientX, y:evt.clientY}
+        messageEvent.ports[0].postMessage({ type: 'SEB_IFRAME_BUBBLE', message: mousePosition});
+    };
+}
 
     </script>
 </div>

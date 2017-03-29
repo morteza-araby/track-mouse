@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "webpack && webpack-dev-server --watch --inline --port 3001",
+    "serve:https": "webpack && node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --https --inline --progress --colors --host 0.0.0.0 --port 3001",
     "postinstall": "typings install",
     "nodemon": "nodemon --watch build",
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -70,8 +70,8 @@ function getIframRect(url) {
 }
 
 export function getIframePosition(id) {
-    //  var iframepos = $("#frame").position();
-    // return iframepos;
+     var iframepos = $("#frame").position();
+     return iframepos;
 
     // var body = document.body,
     // html = document.documentElement;
